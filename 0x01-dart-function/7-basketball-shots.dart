@@ -3,9 +3,9 @@ num getPoints(Map team) {
   team.forEach((key, value) {
     if (key == 'Free throws') {
       points += value;
-    } else if (key == '2 pointer') {
+    } else if (key == '2 pointers') {
       points += value * 2;
-    } else if (key == '3 pointer') {
+    } else if (key == '3 pointers') {
       points += value * 3;
     }
   });
