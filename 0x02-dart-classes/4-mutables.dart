@@ -1,29 +1,45 @@
 class Password {
-  late String _password;
+  // Private property
+  String _password = "";
+
+
+
+  // Constructor
   Password({required String password}) {
-    this.password = password;
-  }
-  String get password {
-    return this._password;
+    _password = password;
   }
 
-  void set password(String value) {
-    this._password = value;
-  }
 
-  bool isValid() {
-    if (this._password.length > 6 && this._password.length < 18) {
-      if (this._password.contains(RegExp(r'[a-zA-Z]'))) {
-        if (this._password.contains(RegExp(r'\d'))) {
-          return true;
-        }
-      }
+
+  // Getter
+  String get password => _password;
+
+
+
+  // Setter for password with validation
+  set password(String newPassword) {
+    if (newPassword.length >= 8 && newPassword.length <= 16) {
+      _password = newPassword;
+    } else {
+      print("Error: Password must be between 8 and 16 characters.");
     }
-    return false;
   }
 
+
+  // Check if the password is valid
+  bool isValid() {
+    return _password.length >= 8 &&
+           _password.length <= 16 &&
+           _password.contains(RegExp(r'[A-Z]')) && // At least one uppercase
+           _password.contains(RegExp(r'[a-z]')) && // At least one lowercase
+           _password.contains(RegExp(r'[0-9]'));   // At least one number
+  }
+
+  
+
+  // Override toString method
   @override
   String toString() {
-    return "Your Password is: ${this._password}";
+    return "Your Password is: $_password";
   }
 }
