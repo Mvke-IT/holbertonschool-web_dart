@@ -1,26 +1,25 @@
 class Password {
-  String? _password = "";
+  String _password;
 
-  String get password => _password!;
+  String get password => _password;
 
   set password(String password) => _password = password;
-  Password({password}) : _password = password;
+
+  Password({String? password}) : _password = password ?? '';
 
   bool isValid() {
-    if ((this._password?.length ?? 0) > 6 &&
-        (this._password?.length ?? 0) < 18) {
-      if (this._password!.contains(RegExp(r"(?=.*[a-z])(?=.*[A-Z])\w+"))) {
-        if (this._password!.contains(RegExp(r'\d'))) {
+    int length = _password.length;
+    if (length <= 6 || length >= 18) return false;
 
-          return true;
-        }
-      }
-    }
-    return false;
+    bool hasLowercase = _password.contains(RegExp(r'[a-z]'));
+    bool hasUppercase = _password.contains(RegExp(r'[A-Z]'));
+    bool hasDigit = _password.contains(RegExp(r'\d'));
+
+    return hasLowercase && hasUppercase && hasDigit;
   }
 
   @override
   String toString() {
-    return "Your Password is: ${this._password}";
+    return "Your Password is: $_password";
   }
 }
