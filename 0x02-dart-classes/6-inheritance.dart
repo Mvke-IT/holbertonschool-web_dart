@@ -1,64 +1,49 @@
-class Password {
-  String? _password;
+import '6-password.dart';
 
-  String get password => _password ?? '';
-
-  set password(String password) => _password = password;
-
-  Password({String? password}) : _password = password;
-
-  bool isValid() {
-    if (_password == null) return false;
-    int length = _password!.length;
-    if (length <= 6 || length >= 18) return false;
-
-    bool hasLowercase = _password!.contains(RegExp(r'[a-z]'));
-    bool hasUppercase = _password!.contains(RegExp(r'[A-Z]'));
-    bool hasDigit = _password!.contains(RegExp(r'\d'));
-
-    return hasLowercase && hasUppercase && hasDigit;
-  }
-
-  @override
-  String toString() {
-    return "Your Password is: $_password";
-  }
-}
-
-class User {
-  final int id;
-  final String name;
-  final int age;
-  final double height;
-  final Password password;
+class User extends Password {
+  int id;
+  String name;
+  int age;
+  double height;
 
   User({
     required this.id,
     required this.name,
     required this.age,
     required this.height,
-    required String user_password,
-  }) : password = Password(password: user_password);
+    String? user_password,
+  }) : super(password: user_password) {
+    isValid();
+  }
 
-  String get user_password => password.password;
 
-  set user_password(String newPassword) => password.password = newPassword;
+  String? get user_password => password;
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'age': age,
-        'height': height,
-      };
+  set user_password(String? value) {
+    password = value;
+    isValid();
+  }
 
-  User.fromJson(Map<String, dynamic> json)
-      : id = json['id'] as int,
-        name = json['name'] as String,
-        age = json['age'] as int,
-        height = json['height'] as double,
-        password = Password(password: json['user_password'] as String?);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'age': age,
+      'height': height
+    };
+  }
+
+  static User fromJson(Map<dynamic, dynamic> userJson) {
+    return new User(
+      id: userJson['id'],
+      name: userJson['name'],
+      age: userJson['age'],
+      height: userJson['height'],
+      user_password: userJson['user_password']);
+  }
 
   @override
-  String toString() =>
-      "User(id: $id, name: $name, age: $age, height: $height, Password: ${password.isValid()})";
+  String toString() {
+    return 'User(id : $id ,name: $name, age: $age, height: $height, Password: ${isValid()})';
+  }
 }
